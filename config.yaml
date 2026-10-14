@@ -1,0 +1,63 @@
+# Gesture -> MQTT settings. Edit this file; no code changes needed.
+# Broker host, username and password are NOT here - they live in the .env file.
+
+camera:
+  index: 0            # 0 = first camera. On a laptop the built-in webcam is usually 0.
+  width: 640
+  height: 480
+  backend: dshow      # auto | dshow | msmf (Windows) | v4l2 (Raspberry Pi / Linux)
+  mirror: true        # flip the picture left-right so the preview behaves like a mirror
+
+model:
+  path: models/gesture_recognizer.task
+  min_gesture_score: 0.5   # ignore a gesture label below this confidence (0.0 - 1.0)
+
+# Label from the MediaPipe model (or "Wave", which this program detects itself)
+# -> text sent to the phone. Labels not listed here are ignored.
+messages:
+  Thumb_Up: "Okay"
+  Thumb_Down: "Not Okay"
+  Open_Palm: "Stop"
+  Closed_Fist: "SOS"
+  Wave: "Hi"
+
+# Label -> the "gesture" value written in the JSON payload.
+payload_names:
+  Thumb_Up: thumbs_up
+  Thumb_Down: thumbs_down
+  Open_Palm: open_palm
+  Closed_Fist: closed_fist
+  Wave: wave
+
+timing:
+  hold_seconds: 1.0          # thumbs up / thumbs down / fist must be held this long
+  stop_hold_seconds: 1.5     # open palm must be held STILL this long to count as "Stop"
+  cooldown_seconds: 5.0      # the same gesture is not sent again within this time
+  repeat_while_held: true    # true: resend every cooldown while still held
+                             # false: send once, then wait until the gesture is released
+  flicker_tolerance_seconds: 0.25  # a label that drops out for less than this is treated as still held
+
+wave:
+  window_seconds: 1.5        # direction changes must all fall inside this window
+  min_direction_changes: 2   # e.g. right -> left -> right
+  min_swing: 0.35            # how far the hand must travel back before a reversal counts,
+                             # measured in palm lengths (wrist to middle knuckle)
+  still_tolerance: 0.30      # open palm may drift this far (palm lengths) and still be "still"
+  blur_tolerance_seconds: 0.5  # a moving open hand may lose its "Open_Palm" label for this long
+                               # (motion blur) without interrupting the wave
+
+mqtt:
+  topic: gestures/pi5/events
+  qos: 1
+  client_id: gesture-publisher   # must differ from the phone's client ID
+  keepalive_seconds: 30
+  reconnect_min_seconds: 1
+  reconnect_max_seconds: 30
+
+payload:
+  time_key: timestamp        # change to "time" if you prefer that key name
+  time_format: iso           # "iso" = 2026-10-09T14:32:05+05:30 ; or a strftime pattern such as "%H:%M:%S"
+
+preview:
+  show: true
+  window_name: Gesture MQTT

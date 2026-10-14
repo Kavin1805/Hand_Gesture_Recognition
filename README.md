@@ -489,5 +489,3 @@ shortcut to `start.bat` in the folder that opens.
 - [EMQX blog: forever free serverless MQTT](https://www.emqx.com/en/blog/how-to-get-a-forever-free-serverless-mqtt-service) (2023; no credit card)
 - [Bevywise: Android MQTT client setup with IoT MQTT Panel](https://bevywise.com/mqtt-broker/resources/android-mqtt-client.html)
 - [Raspberry Pi OS documentation](https://www.raspberrypi.com/documentation/computers/os.html)
-#   H a n d _ G e s t u r e _ R e c o g n i t i o n  
- 

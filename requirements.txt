@@ -1,0 +1,6 @@
+# Versions checked on 2026-10-09. mediapipe installs opencv-contrib-python and numpy itself,
+# so do NOT add opencv-python here (two OpenCV packages in one environment conflict).
+mediapipe==1.1.0
+paho-mqtt==2.1.0
+python-dotenv>=1.0
+PyYAML>=6.0
